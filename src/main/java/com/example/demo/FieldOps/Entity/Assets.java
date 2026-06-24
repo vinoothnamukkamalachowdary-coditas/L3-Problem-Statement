@@ -42,6 +42,6 @@ public class Assets {
     @OneToMany(mappedBy = "asset")
     private List<AssetAttachments> attachments;
 
-    @OneToOne(mappedBy = "asset")
-    private AssetRepair assetRepair;
+    @OneToMany(mappedBy = "asset")
+    private List<JobRequest> requests;
 }

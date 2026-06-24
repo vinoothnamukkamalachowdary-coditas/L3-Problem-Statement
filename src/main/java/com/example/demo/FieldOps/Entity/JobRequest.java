@@ -34,6 +34,10 @@ public class JobRequest {
     @JoinColumn(name ="user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_ID")
+    private Assets asset;
+
     @OneToOne(mappedBy = "jobRequest")
     private Job job;
 

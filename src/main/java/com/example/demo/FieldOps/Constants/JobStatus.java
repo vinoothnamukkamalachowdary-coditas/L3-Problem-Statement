@@ -2,6 +2,8 @@ package com.example.demo.FieldOps.Constants;
 
 public enum JobStatus {
     ASSIGNED,
-    COMPLETED,
-    CANCELED,
+    EN_ROUTE,
+    ON_SITE,
+    IN_PROGRESS,
+    CANCELED
 }

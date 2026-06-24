@@ -34,9 +34,9 @@ public class AssetRepair {
     @Enumerated(EnumType.STRING)
     private RepairStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asset_id")
-    private Assets asset;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "asset_id")
+//    private Assets asset;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
