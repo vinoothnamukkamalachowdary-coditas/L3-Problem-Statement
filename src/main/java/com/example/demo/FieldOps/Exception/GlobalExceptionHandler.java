@@ -17,6 +17,12 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), null);
     }
 
+    @ExceptionHandler(ResourceAlreadyExists.class)
+    public ResponseEntity<Map<String, Object>> handleAlreadyExists(
+            ResourceAlreadyExists ex){
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), null);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleException(Exception ex){
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
