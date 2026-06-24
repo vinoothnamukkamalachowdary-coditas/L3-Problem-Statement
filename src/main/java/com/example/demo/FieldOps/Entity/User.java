@@ -51,6 +51,18 @@ public class User implements UserDetails {
 
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "user")
+    private List<JobRequest>  jobRequests;
+
+    @OneToMany(mappedBy = "dispatcherId")
+    private List<Job> job;
+
+    @OneToMany(mappedBy = "technicianId")
+    private List<Job> Job;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Assets> assets;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
