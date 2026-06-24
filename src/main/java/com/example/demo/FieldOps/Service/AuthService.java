@@ -34,6 +34,7 @@ public class AuthService {
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
         user.setActive(true);
+        user.setAddress(dto.getAddress());
         user.setCreatedAt(LocalDateTime.now());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         return userMapper.Response(userRepository.save(user));

@@ -2,18 +2,25 @@ package com.example.demo.FieldOps.Mapper;
 
 import com.example.demo.FieldOps.DTO.Response.UserLoginResponseDTO;
 import com.example.demo.FieldOps.DTO.Response.UserRegisterResponseDTO;
+import com.example.demo.FieldOps.DTO.Response.UserResponseDTO;
 import com.example.demo.FieldOps.Entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-//    public UserLoginResponseDTO toResponse(User user) {
-//        UserLoginResponseDTO userLoginResponseDTO = new UserLoginResponseDTO();
-//        userLoginResponseDTO.setName(user.getName());
-//        userLoginResponseDTO.setRole(user.getRole());
-//        userLoginResponseDTO.setEmail(user.getEmail());
-//        return userLoginResponseDTO;
-//    }
+    public UserResponseDTO toResponse(User user) {
+        UserResponseDTO ResponseDTO = new UserResponseDTO();
+        ResponseDTO.setName(user.getName());
+        ResponseDTO.setRole(user.getRole());
+        ResponseDTO.setEmail(user.getEmail());
+        ResponseDTO.setAddress(user.getAddress());
+        ResponseDTO.setPassword(user.getPassword());
+        ResponseDTO.setActive(user.isActive());
+        ResponseDTO.setCreatedAt(user.getCreatedAt());
+        ResponseDTO.setUpdatedAt(user.getUpdatedAt());
+        return ResponseDTO;
+    }
+
     public UserRegisterResponseDTO Response(User user1) {
         UserRegisterResponseDTO userRegisterResponseDTO = new UserRegisterResponseDTO();
         userRegisterResponseDTO.setName(user1.getName());
