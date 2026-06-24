@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
     public UserResponseDTO toResponse(User user) {
         UserResponseDTO ResponseDTO = new UserResponseDTO();
+        ResponseDTO.setId(user.getId());
         ResponseDTO.setName(user.getName());
         ResponseDTO.setRole(user.getRole());
         ResponseDTO.setEmail(user.getEmail());
