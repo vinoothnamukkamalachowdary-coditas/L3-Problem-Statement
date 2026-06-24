@@ -36,6 +36,9 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api/v1/auth/**",
                                 "/webjars/**").permitAll()
+                        // Users Seen By Admin Only
+                        .requestMatchers("/api/v1/users" +
+                                "/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
