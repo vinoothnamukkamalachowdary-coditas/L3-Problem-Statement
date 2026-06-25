@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), null);
     }
 
+    @ExceptionHandler(EmailSendingFailure.class)
+    public ResponseEntity<Map<String, Object>> handleEmailSendingFailure(
+            EmailSendingFailure ex){
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleException(Exception ex){
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);

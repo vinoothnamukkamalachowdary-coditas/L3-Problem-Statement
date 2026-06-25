@@ -25,6 +25,7 @@ public class Job {
     private JobStatus status;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jobRequestId")
     private JobRequest jobRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)

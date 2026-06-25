@@ -1,5 +1,6 @@
 package com.example.demo.FieldOps.Entity;
 
+import com.example.demo.FieldOps.Constants.JobRequestStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

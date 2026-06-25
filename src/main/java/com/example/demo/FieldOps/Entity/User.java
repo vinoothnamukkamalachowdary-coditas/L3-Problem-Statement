@@ -1,6 +1,7 @@
 package com.example.demo.FieldOps.Entity;
 
 import com.example.demo.FieldOps.Constants.Role;
+import com.sun.nio.sctp.Notification;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -56,10 +57,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<JobRequest>  jobRequests;
 
-    @OneToMany(mappedBy = "dispatcherId")
+    @OneToMany(mappedBy = "dispatcher")
     private List<Job> dispatchedJobs;
 
-    @OneToMany(mappedBy = "technicianId")
+    @OneToMany(mappedBy = "technician")
     private List<Job> assignedJobs;
 
     @OneToMany(mappedBy = "customer")
@@ -67,6 +68,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "repairedBy")
     private List<AssetRepair> assetRepairs;
+
+    @OneToMany(mappedBy = "issuedBy")
+    private List<Notification> notifications;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
