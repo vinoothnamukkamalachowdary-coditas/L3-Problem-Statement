@@ -18,7 +18,8 @@ public class JobRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean isAvailable;
+    @Enumerated(EnumType.STRING)
+    private JobRequestStatus status;
 
     @NotNull
     private String title;

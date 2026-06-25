@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.cglib.proxy.Dispatcher;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -28,11 +29,17 @@ public class Job {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignedBy")
-    private User dispatcherId;
+    private User dispatcher;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignedTo")
-    private User technicianId;
+    private User technician;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
+
+    private LocalDateTime endTime;
 
     @OneToMany(mappedBy = "job")
     private List<AssetRepair> repairs;

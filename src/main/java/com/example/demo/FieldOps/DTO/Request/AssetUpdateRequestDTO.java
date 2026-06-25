@@ -5,14 +5,11 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-
 @Data
-public class AssetsRequestDTO {
+public class AssetUpdateRequestDTO {
     private String assetName;
     private String assetDescription;
     private AssetType assetType;
+    private LocalDateTime updatedDate;
     private boolean isActive;
-    private String assetCode;
-    private LocalDateTime createdDate;
-    private Long customerId;
 }

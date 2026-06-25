@@ -2,6 +2,7 @@ package com.example.demo.FieldOps.Entity;
 
 import com.example.demo.FieldOps.Constants.AssetType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,10 @@ public class Assets {
     @Enumerated(EnumType.STRING)
     private AssetType assetType;
 
+    @Column(unique = true)
+    @NotBlank
+    private String assetCode;
+
     private boolean isActive;
 
     private LocalDateTime createdDate;
@@ -39,9 +44,12 @@ public class Assets {
     @JoinColumn(name = "customer_id")
     private User customer;
 
-    @OneToMany(mappedBy = "asset")
+    @OneToMany(mappedBy = "AssetId")
     private List<AssetAttachments> attachments;
 
     @OneToMany(mappedBy = "asset")
     private List<JobRequest> requests;
+
+    @OneToOne(mappedBy = "repairedAsset")
+    private AssetRepair repair;
 }

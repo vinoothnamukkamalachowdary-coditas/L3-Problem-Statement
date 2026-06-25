@@ -14,7 +14,9 @@ public class AssetsResponseDTO {
     private String assetName;
     private String assetDescription;
     private AssetType assetType;
+    private String assetCode;
+    private Long customerId;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
-    private List<AssetAttachments> attachments;
+    private List<AssetAttachments> assetAttachments;
 }

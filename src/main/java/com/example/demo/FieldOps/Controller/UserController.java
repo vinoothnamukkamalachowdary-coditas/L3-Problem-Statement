@@ -3,7 +3,6 @@ package com.example.demo.FieldOps.Controller;
 import com.example.demo.FieldOps.DTO.Response.UserResponseDTO;
 import com.example.demo.FieldOps.Entity.User;
 import com.example.demo.FieldOps.Service.UserService;
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

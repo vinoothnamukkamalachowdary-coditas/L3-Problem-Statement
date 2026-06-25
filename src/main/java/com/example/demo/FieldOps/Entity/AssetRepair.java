@@ -2,6 +2,7 @@ package com.example.demo.FieldOps.Entity;
 
 import com.example.demo.FieldOps.Constants.RepairStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,23 +21,29 @@ public class AssetRepair {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String beforePhoto;
 
+    @NotBlank
     private String afterPhoto;
 
     @NotNull
     private String remarks;
 
-    private LocalDateTime startTime;
+    private LocalDateTime startedAt;
 
-    private LocalDateTime endTime;
+    private LocalDateTime endedAt;
 
     @Enumerated(EnumType.STRING)
     private RepairStatus status;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "asset_id")
-//    private Assets asset;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "technician_id")
+    private User repairedBy;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_id")
+    private Assets repairedAsset;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")

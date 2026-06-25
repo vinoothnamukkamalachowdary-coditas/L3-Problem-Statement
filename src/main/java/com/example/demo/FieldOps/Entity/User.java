@@ -57,13 +57,16 @@ public class User implements UserDetails {
     private List<JobRequest>  jobRequests;
 
     @OneToMany(mappedBy = "dispatcherId")
-    private List<Job> job;
+    private List<Job> dispatchedJobs;
 
     @OneToMany(mappedBy = "technicianId")
-    private List<Job> Job;
+    private List<Job> assignedJobs;
 
     @OneToMany(mappedBy = "customer")
     private List<Assets> assets;
+
+    @OneToMany(mappedBy = "repairedBy")
+    private List<AssetRepair> assetRepairs;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
