@@ -18,5 +18,5 @@ public class AssetsResponseDTO {
     private Long customerId;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
-    private List<AssetAttachments> assetAttachments;
+    private List<AssetAttachments> fileName;
 }

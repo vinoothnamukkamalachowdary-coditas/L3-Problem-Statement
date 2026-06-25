@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Data
 public class JobRequestDTO {
     private Long id;
-    private User assignedBy;
-    private User assignedTo;
+    private Long dispatcherId;
+    private Long technicianId;
+    private Long jobRequestId;
     private JobRequest jobRequest;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

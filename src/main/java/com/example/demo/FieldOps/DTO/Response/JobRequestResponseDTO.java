@@ -14,7 +14,7 @@ public class JobRequestResponseDTO {
     private String Notes;
     private JobRequestStatus status;
     private LocalDateTime createdDate;
-    private Long assetsId;
-    private Long createdBy;
+    private Long assetId;
+    private Long customerId;
     private LocalDateTime updatedDate;
 }

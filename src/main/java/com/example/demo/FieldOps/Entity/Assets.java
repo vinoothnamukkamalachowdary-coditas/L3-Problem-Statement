@@ -2,7 +2,6 @@ package com.example.demo.FieldOps.Entity;
 
 import com.example.demo.FieldOps.Constants.AssetType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +30,6 @@ public class Assets {
     private AssetType assetType;
 
     @Column(unique = true)
-    @NotBlank
     private String assetCode;
 
     private boolean isActive;
@@ -44,7 +42,7 @@ public class Assets {
     @JoinColumn(name = "customer_id")
     private User customer;
 
-    @OneToMany(mappedBy = "AssetId")
+    @OneToMany(mappedBy = "assetId")
     private List<AssetAttachments> attachments;
 
     @OneToMany(mappedBy = "asset")
@@ -52,4 +50,8 @@ public class Assets {
 
     @OneToOne(mappedBy = "repairedAsset")
     private AssetRepair repair;
+
+    public void setCustomer(Long customerId) {
+
+    }
 }

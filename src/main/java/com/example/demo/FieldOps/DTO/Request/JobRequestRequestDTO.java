@@ -6,14 +6,13 @@ import com.example.demo.FieldOps.Entity.User;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 public class JobRequestRequestDTO {
+    private Long id;
     @NotNull
     private String title;
     @NotNull
     private String Notes;
-    private Assets assets;
-    private User createdBy;
+    private Long assetId;
+    private Long customerId;
 }

@@ -1,7 +1,6 @@
 package com.example.demo.FieldOps.Entity;
 
 import com.example.demo.FieldOps.Constants.Role;
-import com.sun.nio.sctp.Notification;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

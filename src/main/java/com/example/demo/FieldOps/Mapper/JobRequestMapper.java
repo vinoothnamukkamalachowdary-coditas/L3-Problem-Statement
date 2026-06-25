@@ -12,11 +12,11 @@ public class JobRequestMapper {
     public JobRequestResponseDTO toJobRequestResponseDTO(JobRequest jobRequest){
         JobRequestResponseDTO jobRequestResponseDTO = new JobRequestResponseDTO();
         jobRequestResponseDTO.setId(jobRequest.getId());
-        jobRequestResponseDTO.setAssetsId(jobRequest.getAsset().getId());
+        jobRequestResponseDTO.setAssetId(jobRequest.getAsset().getId());
         jobRequestResponseDTO.setTitle(jobRequest.getTitle());
         jobRequestResponseDTO.setNotes(jobRequest.getNotes());
         jobRequestResponseDTO.setStatus(jobRequest.getStatus());
-        jobRequestResponseDTO.setCreatedBy(jobRequest.getUser().getId());
+        jobRequestResponseDTO.setCustomerId(jobRequest.getUser().getId());
         jobRequestResponseDTO.setCreatedDate(LocalDateTime.now());
         jobRequestResponseDTO.setUpdatedDate(LocalDateTime.now());
         return jobRequestResponseDTO;
