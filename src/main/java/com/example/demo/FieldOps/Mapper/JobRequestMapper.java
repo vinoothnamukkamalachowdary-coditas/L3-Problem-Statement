@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Component
 public class JobRequestMapper {
-    private JobRequestResponseDTO toJobRequestResponseDTO(JobRequest jobRequest){
+    public JobRequestResponseDTO toJobRequestResponseDTO(JobRequest jobRequest){
         JobRequestResponseDTO jobRequestResponseDTO = new JobRequestResponseDTO();
         jobRequestResponseDTO.setId(jobRequest.getId());
         jobRequestResponseDTO.setAssetsId(jobRequest.getAsset().getId());
@@ -19,5 +19,6 @@ public class JobRequestMapper {
         jobRequestResponseDTO.setCreatedBy(jobRequest.getUser().getId());
         jobRequestResponseDTO.setCreatedDate(LocalDateTime.now());
         jobRequestResponseDTO.setUpdatedDate(LocalDateTime.now());
+        return jobRequestResponseDTO;
     }
 }

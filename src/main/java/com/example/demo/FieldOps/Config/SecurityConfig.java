@@ -40,7 +40,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/users" +
                                 "/**").hasAuthority("ROLE_ADMIN")
                         //Customers only
-                        // Users Seen By Admin Only
                         .requestMatchers("/api/v1/assets" +
                                 "/**").hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().authenticated())

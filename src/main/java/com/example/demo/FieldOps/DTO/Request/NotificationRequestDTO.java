@@ -17,4 +17,6 @@ public class NotificationRequestDTO {
     @NotNull(message = "Should not be null")
     private String message;
 
+
+
 }
