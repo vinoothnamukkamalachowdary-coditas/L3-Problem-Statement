@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class JobRequestResponseDTO {
     private Long id;
     private String title;
-    private String Notes;
+    private String notes;
     private JobRequestStatus status;
     private LocalDateTime createdDate;
     private Long assetId;

@@ -18,7 +18,7 @@ public class AssetsMapper {
         ResponseDTO.setAssetDescription(assets.getAssetDescription());
 //        ResponseDTO.setFileName(assets.getAttachments().stream().map(AssetAttachments::f).collect(Collectors.toList()));
         ResponseDTO.setAssetCode(assets.getAssetCode());
-        ResponseDTO.setCustomerId(assets.getCustomer().getId());
+        //ResponseDTO.setCustomerId(assets.getCustomer().getId());
         ResponseDTO.setCreatedDate(LocalDateTime.now());
         ResponseDTO.setUpdatedDate(LocalDateTime.now());
         return ResponseDTO;

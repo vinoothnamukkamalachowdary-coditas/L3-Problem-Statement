@@ -32,13 +32,10 @@ public class JobRequestService {
     private final UserRepository userRepository;
 
     public JobRequestResponseDTO raiseRequest(@Valid JobRequestRequestDTO jobRequest) {
-        if(jobRequestRepository.existsById(jobRequest.getId())) {
-            throw new ResourceAlreadyExists("Job Request already exists");
-        }
+
         Assets assets = assetsRepository.findById(jobRequest.getAssetId()).orElseThrow(() -> new ResourceNotFound("Assets not found:" + jobRequest.getAssetId()));
         User user = userRepository.findById(jobRequest.getCustomerId()).orElseThrow(() -> new ResourceNotFound("Customer not found:" + jobRequest.getCustomerId()));
         JobRequest request = new JobRequest();
-        request.setId(jobRequest.getId());
         request.setTitle(jobRequest.getTitle());
         request.setNotes(jobRequest.getNotes());
         request.setStatus(JobRequestStatus.OPEN);

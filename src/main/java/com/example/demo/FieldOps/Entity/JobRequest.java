@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Job Request")
+@Table(name = "jobRequest")
 public class JobRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,4 +44,7 @@ public class JobRequest {
     private Job job;
 
 
+    public void setAsset(Long id) {
+
+    }
 }

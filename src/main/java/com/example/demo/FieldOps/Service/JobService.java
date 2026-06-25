@@ -35,15 +35,15 @@ public class JobService {
         if(jobRepository.existsById(id)) {
             throw new ResourceAlreadyExists("Job already exists");
         }
-        JobRequest jr = jobRequestRepository.findById(jobRequest.getJobRequestId()).orElseThrow(()-> new ResourceNotFound("Job Request not found:" + jobRequest.getJobRequestId()));
+        //JobRequest jr = jobRequestRepository.findById(jobRequest.getJobRequestId()).orElseThrow(()-> new ResourceNotFound("Job Request not found:" + jobRequest.getJobRequestId()));
         User assignedBy = userRepository.findById(jobRequest.getDispatcherId()).orElseThrow(()-> new ResourceNotFound("User Not Found:" + jobRequest.getDispatcherId()));
         User assignedTo = userRepository.findById(jobRequest.getTechnicianId()).orElseThrow(()-> new ResourceNotFound("User Not Found:" + jobRequest.getTechnicianId()));
         Job job = new Job();
-        job.setId(jobRequest.getId());
+//        job.setId(jobRequest.getId());
         job.setCreateTime(LocalDateTime.now());
         job.setStatus(JobStatus.ASSIGNED);
         job.setCreateTime(LocalDateTime.now());
-        job.setJobRequest(jr);
+        //job.setJobRequest(jr);
         job.setDispatcher(assignedBy);
         job.setTechnician(assignedTo);
         return jobMapper.toJobResponseDTO(jobRepository.save(job));

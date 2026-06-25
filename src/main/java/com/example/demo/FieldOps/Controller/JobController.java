@@ -54,7 +54,7 @@ public class JobController {
     }
 
     @PreAuthorize("hasRole('ROLE_DISPATCHER','ROLE_TECHNICIAN')")
-    @GetMapping
+    @GetMapping("/allJobs")
     public ResponseEntity<List<JobResponseDTO>> allJobs(){
         return ResponseEntity.ok(jobService.allJobs());
     }

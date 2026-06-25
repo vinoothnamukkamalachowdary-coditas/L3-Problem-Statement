@@ -9,7 +9,7 @@ public class AssetAttachmentsMapper {
     public AssetAttachmentResponseDTO ResponseDTO(AssetAttachments assetAttachments){
         AssetAttachmentResponseDTO assetAttachmentResponseDTO = new AssetAttachmentResponseDTO();
         assetAttachmentResponseDTO.setId(assetAttachments.getId());
-        assetAttachmentResponseDTO.setAssetId(assetAttachments.getAssetId().getId());
+        //assetAttachmentResponseDTO.setAssetId(assetAttachments.getAsset().getId());
         assetAttachmentResponseDTO.setFileName(assetAttachments.getFileName());
         assetAttachmentResponseDTO.setFileSize(assetAttachments.getFileSize());
         assetAttachmentResponseDTO.setFileType(assetAttachments.getFileType());

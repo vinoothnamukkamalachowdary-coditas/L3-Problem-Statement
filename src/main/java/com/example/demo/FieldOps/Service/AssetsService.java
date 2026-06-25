@@ -40,12 +40,12 @@ public class AssetsService {
         if (assetsRepository.existsByAssetName(assets.getAssetName())) {
             throw  new ResourceAlreadyExists("Asset with this Name Already Exists");
         }
-        User customer = userRepository.findById(assets.getCustomerId()).orElseThrow(() -> new ResourceNotFound("Customer Not Found:" + assets.getCustomerId()));
+       // User customer = userRepository.findById(assets.getCustomerId()).orElseThrow(() -> new ResourceNotFound("Customer Not Found:" + assets.getCustomerId()));
         Assets asset1 = new Assets();
         asset1.setAssetName(assets.getAssetName());
         asset1.setAssetType(assets.getAssetType());
         asset1.setAssetDescription(assets.getAssetDescription());
-        asset1.setCustomer(customer.getId());
+       // asset1.setCustomer(customer.getId());
         asset1.setAssetCode(assets.getAssetCode());
         asset1.setActive(true);
         asset1.setCreatedDate(LocalDateTime.now());
@@ -69,13 +69,13 @@ public class AssetsService {
         if(attachmentsRepository.existsByAssetIdAndFileName(id, assetsPhoto.getFileName())) {
             throw  new ResourceAlreadyExists("Asset with this Name Already Exists");
         }
-        Assets assetid = assetsRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Asset Not Found:" + id));
+        //Assets assetid = assetsRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Asset Not Found:" + id));
         AssetAttachments assetAttachments = new AssetAttachments();
         assetAttachments.setFileName(assetsPhoto.getFileName());
         assetAttachments.setFileType(assetsPhoto.getFileType());
         assetAttachments.setFileSize(assetsPhoto.getFileSize());
         assetAttachments.setFileUrl(assetsPhoto.getFileUrl());
-        assetAttachments.setAssetId(assetsPhoto.getAssetId());
+        //assetAttachments.setAssetId(assetsPhoto.getAssetId());
         return attachmentsMapper.ResponseDTO(attachmentsRepository.save(assetAttachments));
     }
 

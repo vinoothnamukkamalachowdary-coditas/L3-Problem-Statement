@@ -11,7 +11,7 @@ public class UserResponseDTO {
     private String name;
     private String email;
     private String password;
-    private String Address;
+    private String address;
     private boolean isActive;
     private Role role;
     private LocalDateTime createdAt;

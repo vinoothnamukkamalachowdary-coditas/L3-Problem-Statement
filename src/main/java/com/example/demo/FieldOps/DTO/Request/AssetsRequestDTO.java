@@ -16,5 +16,5 @@ public class AssetsRequestDTO {
     private boolean isActive;
     private String assetCode;
     private LocalDateTime createdDate;
-    private Long customerId;
+//    private Long customerId;
 }

@@ -8,6 +8,6 @@ public class UserRegisterRequestDTO {
     private String name;
     private String email;
     private String password;
-    private String Address;
+    private String address;
     private Role role;
 }

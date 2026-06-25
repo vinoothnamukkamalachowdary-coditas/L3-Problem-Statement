@@ -18,7 +18,7 @@ public class AssetAttachments {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asset_id")
-    private Assets assetId;
+    private Assets asset;
 
     @NotNull
     private String fileName;
@@ -32,6 +32,6 @@ public class AssetAttachments {
     @NotNull
     private String fileSize;
 
-    public void setAssetId(Long assetId) {
-    }
+//    public void setAssetId(Long assetId) {
+//    }
 }

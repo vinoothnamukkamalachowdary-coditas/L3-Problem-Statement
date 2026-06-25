@@ -42,7 +42,7 @@ public class Assets {
     @JoinColumn(name = "customer_id")
     private User customer;
 
-    @OneToMany(mappedBy = "assetId")
+    @OneToMany(mappedBy = "asset")
     private List<AssetAttachments> attachments;
 
     @OneToMany(mappedBy = "asset")
@@ -51,7 +51,7 @@ public class Assets {
     @OneToOne(mappedBy = "repairedAsset")
     private AssetRepair repair;
 
-    public void setCustomer(Long customerId) {
-
-    }
+//    public void setCustomer(Long customerId) {
+//
+//    }
 }

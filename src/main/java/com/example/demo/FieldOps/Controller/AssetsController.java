@@ -6,6 +6,7 @@ import com.example.demo.FieldOps.DTO.Request.AssetsRequestDTO;
 import com.example.demo.FieldOps.DTO.Response.AssetAttachmentResponseDTO;
 import com.example.demo.FieldOps.DTO.Response.AssetsResponseDTO;
 import com.example.demo.FieldOps.Service.AssetsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class AssetsController {
     private final AssetsService service;
 
     @PostMapping("/save")
-    public ResponseEntity<AssetsResponseDTO> saveAsset(@RequestBody AssetsRequestDTO assets) {
+    public ResponseEntity<AssetsResponseDTO> saveAsset(@Valid @RequestBody AssetsRequestDTO assets) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.saveAsset(assets));
     }
 
     @PostMapping("/addphoto/assetId/{id}")
-    public ResponseEntity<AssetAttachmentResponseDTO> addPhoto(@RequestBody AssetAttachmentRequestDTO assetsPhoto, @PathVariable Long id) {
+    public ResponseEntity<AssetAttachmentResponseDTO> addPhoto(@Valid@RequestBody AssetAttachmentRequestDTO assetsPhoto, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addPhoto(assetsPhoto,id));
     }
 
@@ -48,7 +49,7 @@ public class AssetsController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteAsset(@PathVariable Long id) {
         service.deleteAsset(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
 

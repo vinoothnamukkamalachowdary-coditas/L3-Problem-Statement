@@ -8,7 +8,6 @@ import lombok.Data;
 
 @Data
 public class JobRequestRequestDTO {
-    private Long id;
     @NotNull
     private String title;
     @NotNull
