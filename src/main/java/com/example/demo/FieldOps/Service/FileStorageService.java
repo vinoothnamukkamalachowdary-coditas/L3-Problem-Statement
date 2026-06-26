@@ -17,7 +17,6 @@ import java.util.UUID;
 public class FileStorageService {
 
     private final UploadDirectoryConfig config;
-    private final FileStorageService fileStorageService;
 
     public String uploadFile(MultipartFile file) {
 

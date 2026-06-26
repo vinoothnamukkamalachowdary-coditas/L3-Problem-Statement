@@ -24,6 +24,7 @@ public class UserMapper {
 
     public UserRegisterResponseDTO Response(User user1) {
         UserRegisterResponseDTO userRegisterResponseDTO = new UserRegisterResponseDTO();
+        userRegisterResponseDTO.setId(user1.getId());
         userRegisterResponseDTO.setName(user1.getName());
         userRegisterResponseDTO.setRole(user1.getRole());
         userRegisterResponseDTO.setEmail(user1.getEmail());
