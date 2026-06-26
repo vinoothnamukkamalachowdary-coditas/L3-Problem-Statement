@@ -2,7 +2,6 @@ package com.example.demo.FieldOps.Entity;
 
 import com.example.demo.FieldOps.Constants.RepairStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +20,8 @@ public class AssetRepair {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String beforePhoto;
 
-    @NotBlank
     private String afterPhoto;
 
     @NotNull

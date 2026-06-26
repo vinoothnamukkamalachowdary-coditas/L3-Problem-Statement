@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class NotificationRequestDTO {
+
     @NotBlank(message = "Do not leave Blank")
     @Email(message = "Enter a valid Email")
     private String issuedTo;
@@ -16,7 +17,4 @@ public class NotificationRequestDTO {
 
     @NotNull(message = "Should not be null")
     private String message;
-
-
-
 }

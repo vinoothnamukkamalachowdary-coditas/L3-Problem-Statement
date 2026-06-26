@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 
 @Data
 public class AssetsRequestDTO {
+
     private String assetName;
     private String assetDescription;
-    private AssetType assetType;
-    private boolean isActive;
     private String assetCode;
-    private LocalDateTime createdDate;
-//    private Long customerId;
+    private AssetType assetType;
+    private Long customerId;
+
 }

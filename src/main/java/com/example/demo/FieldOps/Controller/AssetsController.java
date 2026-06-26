@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,9 +27,13 @@ public class AssetsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.saveAsset(assets));
     }
 
-    @PostMapping("/addphoto/assetId/{id}")
-    public ResponseEntity<AssetAttachmentResponseDTO> addPhoto(@Valid@RequestBody AssetAttachmentRequestDTO assetsPhoto, @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.addPhoto(assetsPhoto,id));
+    @PostMapping(
+            value = "/addphoto/assetId/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<AssetAttachmentResponseDTO> addPhoto(@PathVariable Long id, @RequestPart("file") MultipartFile file){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addPhoto(file,id));
+
     }
 
     @GetMapping("/getAll")

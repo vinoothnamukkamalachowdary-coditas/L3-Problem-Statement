@@ -4,19 +4,29 @@ import com.example.demo.FieldOps.DTO.Response.JobResponseDTO;
 import com.example.demo.FieldOps.Entity.Job;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 
 @Component
 public class JobMapper {
     public JobResponseDTO toJobResponseDTO(Job job) {
-        JobResponseDTO jobResponseDTO = new JobResponseDTO();
-        jobResponseDTO.setId(job.getId());
-        jobResponseDTO.setJobRequestId(jobResponseDTO.getJobRequestId());
-        jobResponseDTO.setDispatcherId(jobResponseDTO.getDispatcherId());
-        jobResponseDTO.setTechnicianId(jobResponseDTO.getTechnicianId());
-        jobResponseDTO.setCreateTime(LocalDateTime.now());
-        jobResponseDTO.setUpdateTime(LocalDateTime.now());
-        jobResponseDTO.setEndTime(LocalDateTime.now());
-        return jobResponseDTO;
+
+        JobResponseDTO dto = new JobResponseDTO();
+
+        dto.setId(job.getId());
+
+        if (job.getDispatcher() != null)
+            dto.setDispatcherId(job.getDispatcher().getId());
+
+        if (job.getTechnician() != null)
+            dto.setTechnicianId(job.getTechnician().getId());
+
+        if (job.getJobRequest() != null)
+            dto.setJobRequestId(job.getJobRequest().getId());
+
+        dto.setCreateTime(job.getCreateTime());
+        dto.setUpdateTime(job.getUpdateTime());
+        dto.setEndTime(job.getEndTime());
+
+        return dto;
     }
+
 }

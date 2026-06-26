@@ -6,14 +6,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AssetAttachmentsMapper {
-    public AssetAttachmentResponseDTO ResponseDTO(AssetAttachments assetAttachments){
-        AssetAttachmentResponseDTO assetAttachmentResponseDTO = new AssetAttachmentResponseDTO();
-        assetAttachmentResponseDTO.setId(assetAttachments.getId());
-        //assetAttachmentResponseDTO.setAssetId(assetAttachments.getAsset().getId());
-        assetAttachmentResponseDTO.setFileName(assetAttachments.getFileName());
-        assetAttachmentResponseDTO.setFileSize(assetAttachments.getFileSize());
-        assetAttachmentResponseDTO.setFileType(assetAttachments.getFileType());
-        assetAttachmentResponseDTO.setFileUrl(assetAttachments.getFileUrl());
-        return  assetAttachmentResponseDTO;
+    public AssetAttachmentResponseDTO toResponseDto(AssetAttachments attachment) {
+
+        if (attachment == null) {
+            return null;
+        }
+
+        AssetAttachmentResponseDTO response = new AssetAttachmentResponseDTO();
+
+        response.setId(attachment.getId());
+
+        // Set Asset Id if asset is present
+        if (attachment.getAsset() != null) {
+            response.setAssetId(attachment.getAsset().getId());
+        }
+
+        response.setFileName(attachment.getFileName());
+        response.setFileUrl(attachment.getFileUrl());
+        response.setFileType(attachment.getFileType());
+        response.setFileSize(attachment.getFileSize());
+
+        return response;
     }
 }

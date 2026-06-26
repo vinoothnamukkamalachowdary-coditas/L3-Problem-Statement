@@ -29,34 +29,54 @@ public class JobController {
     private final JobService jobService;
     private final NotificationService notificationService;
 
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    @PostMapping("/raiseRequest")
-    public ResponseEntity<JobRequestResponseDTO> raiseRequest(@Valid @RequestBody JobRequestRequestDTO jobRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(jobRequestService.raiseRequest(jobRequest));
+    // CUSTOMER raises a service request
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PostMapping("/requests")
+    public ResponseEntity<JobRequestResponseDTO> raiseRequest(
+            @Valid @RequestBody JobRequestRequestDTO requestDTO) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(jobRequestService.raiseRequest(requestDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_DISPATCHER')")
-    @GetMapping("/request/all")
-    public ResponseEntity<List<JobRequestResponseDTO>> allJobRequests(){
+    // CUSTOMER & DISPATCHER can view requests
+    @PreAuthorize("hasAnyRole('CUSTOMER','DISPATCHER')")
+    @GetMapping("/requests")
+    public ResponseEntity<List<JobRequestResponseDTO>> allJobRequests() {
+
         return ResponseEntity.ok(jobRequestService.allJobRequests());
     }
 
-    @PreAuthorize("hasRole('ROLE_DISPATCHER')")
-    @PostMapping("/assign/jobRequest/{id}")
-    public ResponseEntity<JobResponseDTO> assign(@PathVariable Long id, @Valid @RequestBody JobRequestDTO jobRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(jobService.assign(id,jobRequest));
-    }
-
+    // Dispatcher assigns technician
     @PreAuthorize("hasRole('DISPATCHER')")
-    @PostMapping("/sendNotification/forJob/{jobId}")
-    public ResponseEntity<NotificationResponseDTO> sendNotification(@PathVariable Long jobId, @Valid @RequestBody NotificationRequestDTO notificationRequestDTO,@AuthenticationPrincipal UserDetails auth){
-        return ResponseEntity.status(HttpStatus.OK).body(notificationService.sendNotification(jobId,notificationRequestDTO,auth));
+    @PostMapping("/{requestId}/assign")
+    public ResponseEntity<JobResponseDTO> assignJob(
+            @PathVariable Long requestId,
+            @Valid @RequestBody JobRequestDTO dto) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(jobService.assign(requestId, dto));
     }
 
-    @PreAuthorize("hasRole('ROLE_DISPATCHER','ROLE_TECHNICIAN')")
-    @GetMapping("/allJobs")
-    public ResponseEntity<List<JobResponseDTO>> allJobs(){
+    // Dispatcher sends notification
+    @PreAuthorize("hasRole('DISPATCHER')")
+    @PostMapping("/{jobId}/notifications")
+    public ResponseEntity<NotificationResponseDTO> sendNotification(
+            @PathVariable Long jobId,
+            @Valid @RequestBody NotificationRequestDTO dto,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        return ResponseEntity.ok(
+                notificationService.sendNotification(jobId, dto, userDetails));
+    }
+
+    // Dispatcher & Technician
+    @PreAuthorize("hasAnyRole('DISPATCHER','TECHNICIAN')")
+    @GetMapping
+    public ResponseEntity<List<JobResponseDTO>> allJobs() {
+
         return ResponseEntity.ok(jobService.allJobs());
     }
+
 
 }

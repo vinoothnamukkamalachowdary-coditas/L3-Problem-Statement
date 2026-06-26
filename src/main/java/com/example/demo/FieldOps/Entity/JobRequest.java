@@ -26,7 +26,7 @@ public class JobRequest {
     private String title;
 
     @NotNull
-    private String Notes;
+    private String notes;
 
     private LocalDateTime createdDate;
 

@@ -27,25 +27,42 @@ import java.util.stream.Collectors;
 public class JobRequestService {
 
     private final JobRequestRepository jobRequestRepository;
-    private final JobRequestMapper jobRequestMapper;
     private final AssetsRepository assetsRepository;
     private final UserRepository userRepository;
+    private final JobRequestMapper jobRequestMapper;
 
-    public JobRequestResponseDTO raiseRequest(@Valid JobRequestRequestDTO jobRequest) {
+    public JobRequestResponseDTO raiseRequest(@Valid JobRequestRequestDTO requestDTO) {
 
-        Assets assets = assetsRepository.findById(jobRequest.getAssetId()).orElseThrow(() -> new ResourceNotFound("Assets not found:" + jobRequest.getAssetId()));
-        User user = userRepository.findById(jobRequest.getCustomerId()).orElseThrow(() -> new ResourceNotFound("Customer not found:" + jobRequest.getCustomerId()));
+        Assets asset = assetsRepository.findById(requestDTO.getAssetId())
+                .orElseThrow(() ->
+                        new ResourceNotFound("Asset not found with id : " + requestDTO.getAssetId()));
+
+        User customer = userRepository.findById(requestDTO.getCustomerId())
+                .orElseThrow(() ->
+                        new ResourceNotFound("Customer not found with id : " + requestDTO.getCustomerId()));
+
         JobRequest request = new JobRequest();
-        request.setTitle(jobRequest.getTitle());
-        request.setNotes(jobRequest.getNotes());
+
+        request.setTitle(requestDTO.getTitle());
+        request.setNotes(requestDTO.getNotes());
         request.setStatus(JobRequestStatus.OPEN);
+
+        request.setAsset(asset.getId());
+        request.setUser(customer);
+
         request.setCreatedDate(LocalDateTime.now());
-        request.setAsset(assets);
-        request.setUser(user);
-        return jobRequestMapper.toJobRequestResponseDTO(jobRequestRepository.save(request));
+        request.setUpdatedDate(LocalDateTime.now());
+        JobRequest savedRequest = jobRequestRepository.save(request);
+
+        return jobRequestMapper.toJobRequestResponseDTO(savedRequest);
     }
 
+    @Transactional(readOnly = true)
     public List<JobRequestResponseDTO> allJobRequests() {
-        return jobRequestRepository.findAll().stream().map(jobRequestMapper::toJobRequestResponseDTO).collect(Collectors.toList());
+
+        return jobRequestRepository.findAll()
+                .stream()
+                .map(jobRequestMapper::toJobRequestResponseDTO)
+                .collect(Collectors.toList());
     }
 }

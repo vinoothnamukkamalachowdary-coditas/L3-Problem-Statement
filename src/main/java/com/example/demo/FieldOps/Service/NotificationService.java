@@ -22,25 +22,43 @@ import org.springframework.transaction.annotation.Transactional;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
-    private final EmailService emailService;
-    private final NotificationMapper notificationMapper;
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
+    private final NotificationMapper notificationMapper;
+    private final EmailService emailService;
 
-    public NotificationResponseDTO sendNotification(Long jobId, @Valid NotificationRequestDTO notificationRequestDTO, UserDetails auth) {
-        if(notificationRepository.findById(jobId).isPresent()){
-            throw new ResourceAlreadyExists("Notification already sent");
+    public NotificationResponseDTO sendNotification(
+            Long jobId,
+            NotificationRequestDTO dto,
+            UserDetails auth) {
+
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() ->
+                        new ResourceNotFound("Job not found"));
+
+        if (notificationRepository.findByJob(job).isPresent()) {
+            throw new ResourceAlreadyExists(
+                    "Notification already sent for this Job");
         }
-        if(userRepository.findByEmail(emailService.jobAssignmentNotification(auth.getUsername())).isPresent()){
-            throw new ResourceNotFound("User not found");
-        }
+
+        var sender = userRepository.findByEmail(auth.getUsername())
+                .orElseThrow(() ->
+                        new ResourceNotFound("Logged-in user not found"));
+
         Notification notification = new Notification();
-        Job job = jobRepository.findById(jobId).get();
+
         notification.setJob(job);
-        notification.setMessage(notificationRequestDTO.getMessage());
-        notification.setIssuedBy(notification.getIssuedBy());
-        notification.setIssuedTo(notificationRequestDTO.getIssuedTo());
-        notification.setRecipientName(notificationRequestDTO.getRecipientName());
-        return notificationMapper.toNotificationResponseDTO(notificationRepository.save(notification));
+        notification.setIssuedBy(sender);
+
+        notification.setIssuedTo(dto.getIssuedTo());
+        notification.setRecipientName(dto.getRecipientName());
+        notification.setMessage(dto.getMessage());
+
+        Notification savedNotification =
+                notificationRepository.save(notification);
+
+        emailService.sendJobAssignmentMail(dto.getIssuedTo());
+
+        return notificationMapper.toNotificationResponseDTO(savedNotification);
     }
 }

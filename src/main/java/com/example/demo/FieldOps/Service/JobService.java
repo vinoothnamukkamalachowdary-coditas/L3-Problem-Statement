@@ -26,30 +26,57 @@ import java.util.stream.Collectors;
 @Transactional
 public class JobService {
 
+
     private final JobRepository jobRepository;
     private final JobRequestRepository jobRequestRepository;
-    private final JobMapper jobMapper;
     private final UserRepository userRepository;
+    private final JobMapper jobMapper;
+    private final EmailService emailService;
 
-    public JobResponseDTO assign(Long id, @Valid JobRequestDTO jobRequest) {
-        if(jobRepository.existsById(id)) {
-            throw new ResourceAlreadyExists("Job already exists");
+    public JobResponseDTO assign(Long requestId,
+                                 JobRequestDTO dto) {
+
+        JobRequest jobRequest = jobRequestRepository.findById(requestId)
+                .orElseThrow(() ->
+                        new ResourceNotFound("Job Request not found : " + requestId));
+
+        if (jobRepository.findByJobRequest(jobRequest).isPresent()) {
+            throw new ResourceAlreadyExists("Job already assigned.");
         }
-        //JobRequest jr = jobRequestRepository.findById(jobRequest.getJobRequestId()).orElseThrow(()-> new ResourceNotFound("Job Request not found:" + jobRequest.getJobRequestId()));
-        User assignedBy = userRepository.findById(jobRequest.getDispatcherId()).orElseThrow(()-> new ResourceNotFound("User Not Found:" + jobRequest.getDispatcherId()));
-        User assignedTo = userRepository.findById(jobRequest.getTechnicianId()).orElseThrow(()-> new ResourceNotFound("User Not Found:" + jobRequest.getTechnicianId()));
+
+        User dispatcher = userRepository.findById(dto.getDispatcherId())
+                .orElseThrow(() ->
+                        new ResourceNotFound("Dispatcher not found"));
+
+        User technician = userRepository.findById(dto.getTechnicianId())
+                .orElseThrow(() ->
+                        new ResourceNotFound("Technician not found"));
+
         Job job = new Job();
-//        job.setId(jobRequest.getId());
-        job.setCreateTime(LocalDateTime.now());
+
+        job.setJobRequest(jobRequest);
+        job.setDispatcher(dispatcher);
+        job.setTechnician(technician);
+
         job.setStatus(JobStatus.ASSIGNED);
+
         job.setCreateTime(LocalDateTime.now());
-        //job.setJobRequest(jr);
-        job.setDispatcher(assignedBy);
-        job.setTechnician(assignedTo);
-        return jobMapper.toJobResponseDTO(jobRepository.save(job));
+        job.setUpdateTime(LocalDateTime.now());
+
+        Job savedJob = jobRepository.save(job);
+
+        emailService.sendJobAssignmentMail(
+                technician.getEmail());
+
+        return jobMapper.toJobResponseDTO(savedJob);
     }
 
     public List<JobResponseDTO> allJobs() {
-        return jobRepository.findAll().stream().map(jobMapper::toJobResponseDTO).collect(Collectors.toList());
+
+        return jobRepository.findAll()
+                .stream()
+                .map(jobMapper::toJobResponseDTO)
+                .toList();
     }
 }
+

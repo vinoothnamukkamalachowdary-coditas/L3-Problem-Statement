@@ -22,58 +22,59 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-    public String jobAssignmentNotification(String emailId) {
+    public void sendJobAssignmentMail(String email) {
 
-        String JobRequestToken = UUID.randomUUID().toString();
+            String message = """
+                Dear Technician,
 
-        String notificationMessage =
-                """
-                Dear Technician,this mail is sent to you to know that You have been assigned the Job
-                with the below JobRequestToken.Kindly do the task
-                Token:
-                """
-                        + JobRequestToken;
+                A new job has been assigned to you.
 
-        try {
+                Please login to the Field Operations Portal and start working on it.
 
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
+                Thank you.
+                """;
 
-            mailMessage.setFrom(sender);
-            mailMessage.setTo(emailId);
-            mailMessage.setSubject("Tenant User Invitation");
-            mailMessage.setText(notificationMessage);
-
-            mailSender.send(mailMessage);
-
-        } catch (MailException ex) {
-
-            throw new EmailSendingFailure(
-                    "Unable to send invitation email"
-            );
+            sendPlainEmail(email,
+                    "New Job Assigned",
+                    message);
         }
 
-        return JobRequestToken;
-    }
+        public void sendJobCompletionMail(String email) {
 
-    public void sendJobCompletionMail(String emailId) {
-        String message =
-                        "Hi "
-                        + "Your repair is successfully finished for your asset "
-                        + "You can track your status from our platform,"
-                        + "Thank you for choosing us.";
+            String message = """
+                Dear Customer,
 
-        sendPlainEmail(emailId, "Asset Repair Confirmation", message);
-    }
-    private void sendPlainEmail(String emailId, String subject, String body) {
-        try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom(sender);
-            mailMessage.setTo(emailId);
-            mailMessage.setSubject(subject);
-            mailMessage.setText(body);
-            mailSender.send(mailMessage);
-        } catch (MailException ex) {
-            throw new EmailSendingFailure("Unable to send email: " +emailId);
+                Your asset repair has been completed successfully.
+
+                Thank you for using our platform.
+                """;
+
+            sendPlainEmail(email,
+                    "Asset Repair Completed",
+                    message);
         }
+
+        private void sendPlainEmail(String email,
+                                    String subject,
+                                    String body) {
+
+            try {
+
+                SimpleMailMessage mail = new SimpleMailMessage();
+
+                String sender = "vinoothnamukkamala@gmail.com";
+                mail.setFrom(sender);
+                mail.setTo(email);
+                mail.setSubject(subject);
+                mail.setText(body);
+
+                mailSender.send(mail);
+
+            } catch (MailException ex) {
+
+                throw new EmailSendingFailure(
+                        "Unable to send email to " + email);
+            }
+        }
+
     }
-}

@@ -1,13 +1,11 @@
 package com.example.demo.FieldOps.Service;
 
-import com.example.demo.FieldOps.DTO.Request.AssetAttachmentRequestDTO;
 import com.example.demo.FieldOps.DTO.Request.AssetUpdateRequestDTO;
 import com.example.demo.FieldOps.DTO.Request.AssetsRequestDTO;
 import com.example.demo.FieldOps.DTO.Response.AssetAttachmentResponseDTO;
 import com.example.demo.FieldOps.DTO.Response.AssetsResponseDTO;
 import com.example.demo.FieldOps.Entity.AssetAttachments;
 import com.example.demo.FieldOps.Entity.Assets;
-import com.example.demo.FieldOps.Entity.JobRequest;
 import com.example.demo.FieldOps.Entity.User;
 import com.example.demo.FieldOps.Exception.ResourceAlreadyExists;
 import com.example.demo.FieldOps.Exception.ResourceNotFound;
@@ -15,15 +13,14 @@ import com.example.demo.FieldOps.Mapper.AssetAttachmentsMapper;
 import com.example.demo.FieldOps.Mapper.AssetsMapper;
 import com.example.demo.FieldOps.Repository.AssetAttachmentsRepository;
 import com.example.demo.FieldOps.Repository.AssetsRepository;
-import com.example.demo.FieldOps.Repository.JobRequestRepository;
 import com.example.demo.FieldOps.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,71 +28,150 @@ import java.util.stream.Collectors;
 public class AssetsService {
 
     private final AssetsRepository assetsRepository;
-    private final AssetAttachmentsRepository attachmentsRepository;
-    private final AssetAttachmentsMapper attachmentsMapper;
-    private final AssetsMapper mapper;
+    private final AssetAttachmentsRepository attachmentRepository;
+    private final AssetAttachmentsMapper attachmentMapper;
+    private final AssetsMapper assetsMapper;
+    private final FileStorageService fileStorageService;
     private final UserRepository userRepository;
 
-    public AssetsResponseDTO saveAsset(AssetsRequestDTO assets) {
-        if (assetsRepository.existsByAssetName(assets.getAssetName())) {
-            throw  new ResourceAlreadyExists("Asset with this Name Already Exists");
+    /**
+     * Create Asset
+     */
+    public AssetsResponseDTO saveAsset(AssetsRequestDTO dto) {
+
+        if (assetsRepository.existsByAssetName(dto.getAssetName())) {
+            throw new ResourceAlreadyExists(
+                    "Asset already exists with name : " + dto.getAssetName());
         }
-       // User customer = userRepository.findById(assets.getCustomerId()).orElseThrow(() -> new ResourceNotFound("Customer Not Found:" + assets.getCustomerId()));
-        Assets asset1 = new Assets();
-        asset1.setAssetName(assets.getAssetName());
-        asset1.setAssetType(assets.getAssetType());
-        asset1.setAssetDescription(assets.getAssetDescription());
-       // asset1.setCustomer(customer.getId());
-        asset1.setAssetCode(assets.getAssetCode());
-        asset1.setActive(true);
-        asset1.setCreatedDate(LocalDateTime.now());
-//        asset1.setUpdatedDate(asset1.getUpdatedDate());
-//        asset1.setRequests(asset1.getRequests());
-        return mapper.toResponse(assetsRepository.save(asset1));
+
+        User customer = userRepository.findById(dto.getCustomerId())
+                .orElseThrow(() ->
+                        new ResourceNotFound(
+                                "Customer not found with id : " + dto.getCustomerId()));
+
+        Assets asset = new Assets();
+
+        asset.setAssetName(dto.getAssetName());
+        asset.setAssetDescription(dto.getAssetDescription());
+        asset.setAssetCode(dto.getAssetCode());
+        asset.setAssetType(dto.getAssetType());
+
+        // sets customer
+        asset.setCustomer(customer);
+
+        asset.setActive(true);
+        asset.setCreatedDate(LocalDateTime.now());
+        asset.setUpdatedDate(LocalDateTime.now());
+
+        Assets savedAsset = assetsRepository.save(asset);
+
+        return assetsMapper.toDto(savedAsset);
     }
 
+    /**
+     * Get all Assets
+     */
+    @Transactional(readOnly = true)
     public List<AssetsResponseDTO> getAllAssets() {
-        return assetsRepository.findAll().stream()
-                .map(mapper::toResponse).collect(Collectors.toList());
+
+        return assetsRepository.findAll()
+                .stream()
+                .map(assetsMapper::toDto)
+                .toList();
     }
 
-    public AssetAttachmentResponseDTO addPhoto(AssetAttachmentRequestDTO assetsPhoto, Long id) {
-//        if (assetsPhoto != null) {
-//            AssetAttachments assetAttachments = attachmentsRepository.findById(id).orElse(null);
-//            if (assetAttachments != null) {
-//                throw new ResourceAlreadyExists("Photo with this Id Already Exists");
-//            }
-//        }
-        if(attachmentsRepository.existsByAssetIdAndFileName(id, assetsPhoto.getFileName())) {
-            throw  new ResourceAlreadyExists("Asset with this Name Already Exists");
-        }
-        //Assets assetid = assetsRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Asset Not Found:" + id));
-        AssetAttachments assetAttachments = new AssetAttachments();
-        assetAttachments.setFileName(assetsPhoto.getFileName());
-        assetAttachments.setFileType(assetsPhoto.getFileType());
-        assetAttachments.setFileSize(assetsPhoto.getFileSize());
-        assetAttachments.setFileUrl(assetsPhoto.getFileUrl());
-        //assetAttachments.setAssetId(assetsPhoto.getAssetId());
-        return attachmentsMapper.ResponseDTO(attachmentsRepository.save(assetAttachments));
-    }
-
-    public AssetsResponseDTO modifyAsset(AssetUpdateRequestDTO requestDTO, Long assetId) {
-        Assets asset = assetsRepository.findById(assetId).orElseThrow(() -> new ResourceNotFound("Asset Is Not Found"));
-        asset.setAssetName(requestDTO.getAssetName());
-        asset.setAssetType(asset.getAssetType());
-        asset.setAssetDescription(asset.getAssetDescription());
-        asset.setAttachments(asset.getAttachments());
-        return mapper.toResponse(assetsRepository.save(asset));
-    }
-
-    public String deleteAsset(Long id) {
-        Assets assets = assetsRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Asset is Not Found with the id " + id));
-        assets.setActive(false);
-        assetsRepository.save(assets);
-        return "Asset has been Deleted";
-    }
-
+    /**
+     * Get Asset by Id
+     */
+    @Transactional(readOnly = true)
     public AssetsResponseDTO getAssetById(Long assetId) {
-        return assetsRepository.findById(assetId).map(mapper::toResponse).orElseThrow(() -> new ResourceNotFound("Asset is Not Found with the id " + assetId));
+
+        Assets asset = assetsRepository.findById(assetId)
+                .orElseThrow(() ->
+                        new ResourceNotFound(
+                                "Asset not found : " + assetId));
+
+        return assetsMapper.toDto(asset);
+    }
+
+    /**
+     * Upload Asset Photo
+     */
+    public AssetAttachmentResponseDTO addPhoto(
+            MultipartFile file,
+            Long assetId) {
+
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Please upload a file.");
+        }
+
+        Assets asset = assetsRepository.findById(assetId)
+                .orElseThrow(() ->
+                        new ResourceNotFound(
+                                "Asset not found : " + assetId));
+
+        String fileUrl = fileStorageService.uploadFile(file);
+
+        AssetAttachments attachment = new AssetAttachments();
+
+        attachment.setAsset(asset);
+
+        attachment.setFileName(file.getOriginalFilename());
+
+        attachment.setFileType(file.getContentType());
+
+        attachment.setFileUrl(fileUrl);
+
+        attachment.setFileSize(String.valueOf(file.getSize()));
+
+        AssetAttachments savedAttachment =
+                attachmentRepository.save(attachment);
+
+        return attachmentMapper.toResponseDto(savedAttachment);
+    }
+
+    /**
+     * Update Asset
+     */
+    public AssetsResponseDTO modifyAsset(
+            AssetUpdateRequestDTO dto,
+            Long assetId) {
+
+        Assets asset = assetsRepository.findById(assetId)
+                .orElseThrow(() ->
+                        new ResourceNotFound(
+                                "Asset not found : " + assetId));
+
+        asset.setAssetName(dto.getAssetName());
+
+        asset.setAssetType(dto.getAssetType());
+
+        asset.setAssetDescription(dto.getAssetDescription());
+
+        asset.setUpdatedDate(LocalDateTime.now());
+
+        Assets updatedAsset =
+                assetsRepository.save(asset);
+
+        return assetsMapper.toDto(updatedAsset);
+    }
+
+    /**
+     * Soft Delete
+     */
+    public String deleteAsset(Long assetId) {
+
+        Assets asset = assetsRepository.findById(assetId)
+                .orElseThrow(() ->
+                        new ResourceNotFound(
+                                "Asset not found : " + assetId));
+
+        asset.setActive(false);
+
+        asset.setUpdatedDate(LocalDateTime.now());
+
+        assetsRepository.save(asset);
+
+        return "Asset deleted successfully.";
     }
 }

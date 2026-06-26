@@ -1,17 +1,19 @@
 package com.example.demo.FieldOps.DTO.Request;
-
-import com.example.demo.FieldOps.Constants.JobRequestStatus;
-import com.example.demo.FieldOps.Entity.Assets;
-import com.example.demo.FieldOps.Entity.User;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class JobRequestRequestDTO {
-    @NotNull
+    @NotBlank
     private String title;
+
+    @NotBlank
+    private String notes;
+
     @NotNull
-    private String Notes;
     private Long assetId;
+
+    @NotNull
     private Long customerId;
 }

@@ -1,12 +1,14 @@
 package com.example.demo.FieldOps.DTO.Request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class AssetAttachmentRequestDTO {
-//    private Long assetId;
-    private String fileName;
-    private String fileUrl;
-    private String fileSize;
-    private String fileType;
+
+    @NotNull
+    private MultipartFile file;
+
 }

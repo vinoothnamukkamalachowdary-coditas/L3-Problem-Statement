@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 public class NotificationResponseDTO {
     private Long id;
     private String issuedTo;
+    private String message;
+    private String recipientName;
     private LocalDateTime issuedAt;
     private String issuedByEmail;
 }
+

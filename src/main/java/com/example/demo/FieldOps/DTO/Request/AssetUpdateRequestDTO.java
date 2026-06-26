@@ -12,4 +12,5 @@ public class AssetUpdateRequestDTO {
     private AssetType assetType;
     private LocalDateTime updatedDate;
     private boolean isActive;
+
 }

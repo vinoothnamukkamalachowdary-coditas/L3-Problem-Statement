@@ -5,5 +5,6 @@ public enum JobStatus {
     EN_ROUTE,
     ON_SITE,
     IN_PROGRESS,
-    CANCELED
+    ACCEPTED,
+    COMPLETED
 }

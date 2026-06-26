@@ -32,6 +32,4 @@ public class AssetAttachments {
     @NotNull
     private String fileSize;
 
-//    public void setAssetId(Long assetId) {
-//    }
 }
