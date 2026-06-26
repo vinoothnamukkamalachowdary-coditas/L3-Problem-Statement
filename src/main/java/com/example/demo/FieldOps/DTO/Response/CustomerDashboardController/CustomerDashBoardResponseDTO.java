@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 public class CustomerDashBoardResponseDTO {
     private Long customerId;
-    private List<?> activities; // Replace ? with a custom Activity DTO class if needed
+    private List<?> activities;
     private int currentPage;
     private long totalItems;
     private int totalPages;
