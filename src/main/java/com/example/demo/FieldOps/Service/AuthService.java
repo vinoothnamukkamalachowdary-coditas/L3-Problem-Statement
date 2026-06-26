@@ -12,11 +12,13 @@ import com.example.demo.FieldOps.Repository.UserRepository;
 import com.example.demo.FieldOps.Security.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -37,6 +39,7 @@ public class AuthService {
         user.setAddress(dto.getAddress());
         user.setCreatedAt(LocalDateTime.now());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        log.info("Registering user");
         return userMapper.Response(userRepository.save(user));
     }
 
@@ -46,6 +49,7 @@ public class AuthService {
             throw new RuntimeException("Wrong Password");
         }
         String token = jwtUtil.generateToken(user1.getEmail(), user1.getRole().name());
+        log.info("Login Token: {}", token);
         return UserLoginResponseDTO.builder()
                 .token(token)
                 .name(user1.getName())

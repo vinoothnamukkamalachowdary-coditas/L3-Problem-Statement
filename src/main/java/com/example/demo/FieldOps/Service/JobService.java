@@ -14,6 +14,7 @@ import com.example.demo.FieldOps.Repository.JobRequestRepository;
 import com.example.demo.FieldOps.Repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class JobService {
 
 
@@ -32,6 +34,7 @@ public class JobService {
     private final UserRepository userRepository;
     private final JobMapper jobMapper;
     private final EmailService emailService;
+
 
     public JobResponseDTO assign(Long requestId,
                                  JobRequestDTO dto) {
@@ -67,12 +70,13 @@ public class JobService {
 
         emailService.sendJobAssignmentMail(
                 technician.getEmail());
-
+        log.info("Successfully the job is assigned to the technician");
         return jobMapper.toJobResponseDTO(savedJob);
     }
 
-    public List<JobResponseDTO> allJobs() {
 
+    public List<JobResponseDTO> allJobs() {
+        log.info("Getting all jobs");
         return jobRepository.findAll()
                 .stream()
                 .map(jobMapper::toJobResponseDTO)

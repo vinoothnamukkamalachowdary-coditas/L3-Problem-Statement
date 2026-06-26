@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 "/**").hasAuthority("ROLE_ADMIN")
                         //Customers only
                         .requestMatchers("/api/v1/assets" +
-                                "/**").hasAuthority("ROLE_CUSTOMER")
+                                "/**","/api/v1/dashboard/" + "/**").hasAuthority("ROLE_CUSTOMER")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)

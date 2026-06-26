@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerAssetAttachmentsResponseDTO {
-    private Long id;
-    private Long assetId;
+
+    private Long attachmentId;
     private String fileName;
     private String fileUrl;
     private String fileType;

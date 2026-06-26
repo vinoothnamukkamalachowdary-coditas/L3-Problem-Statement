@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AssetsRepository extends JpaRepository<Assets, Long> {
     boolean existsByAssetName(String assetName);
-    List<Assets> findAllByCustomerId(Long customerId);
+    List<Assets> findByCustomerId(String customerId);
 }

@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerJobRequestsResponseDTO {
-    private Long id;
     private Long jobRequestId;
-    private Long assetId;
     private String title;
     private String notes;
 }

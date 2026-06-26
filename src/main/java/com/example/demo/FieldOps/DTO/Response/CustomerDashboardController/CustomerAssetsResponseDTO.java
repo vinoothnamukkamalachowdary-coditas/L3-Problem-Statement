@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerAssetsResponseDTO {
-    private Long id;
     private Long assetId;
     private String assetName;
     private String assetDescription;
